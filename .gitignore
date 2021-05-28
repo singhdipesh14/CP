@@ -33,3 +33,6 @@
 
 # Random
 *.txt
+
+.vscode
+cp.code-workspace
