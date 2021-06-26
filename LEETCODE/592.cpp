@@ -99,16 +99,142 @@ using namespace std;
 
 //const ll max_num = 100001;
 
+int gcd(int m, int n)
+{
+	if (n == 0)
+	{
+		return m;
+	}
+	return gcd(n, m % n);
+}
+
 void func()
 {
-	cout << "Hello World" << endl;
+	string expression;
+	getline(cin, expression);
+	vector<pair<int, int>> fraction;
+	for (int i = 0; i < expression.length();)
+	{
+		if (expression[i] <= 57 && expression[i] >= 48)
+		{
+			int num = (int)(expression[i] - '0');
+			i++;
+			if (expression[i] <= 57 && expression[i] >= 48)
+			{
+				num = num * 10 + (int)(expression[i] - '0');
+			}
+			else
+			{
+				i--;
+			}
+			i += 2;
+			int den = (int)(expression[i] - '0');
+			i++;
+			if (expression[i] <= 57 && expression[i] >= 48)
+			{
+				den = den * 10 + (int)(expression[i] - '0');
+			}
+			else
+			{
+				i--;
+			}
+			fraction.push_back(make_pair(num, den));
+		}
+		else if (expression[i] == '+' || expression[i] == '-')
+		{
+			int num, den;
+			if (expression[i] == '-')
+			{
+				i++;
+				num = -1 * (int)(expression[i] - '0');
+				i++;
+				if (expression[i] <= 57 && expression[i] >= 48)
+				{
+					num = num * 10 + (int)(expression[i] - '0');
+				}
+				else
+				{
+					i--;
+				}
+				i += 2;
+				den = (int)(expression[i] - '0');
+				i++;
+				if (expression[i] <= 57 && expression[i] >= 48)
+				{
+					den = den * 10 + (int)(expression[i] - '0');
+				}
+				else
+				{
+					i--;
+				}
+			}
+			else
+			{
+				i++;
+				num = (int)(expression[i] - '0');
+				i++;
+				if (expression[i] <= 57 && expression[i] >= 48)
+				{
+					num = num * 10 + (int)(expression[i] - '0');
+				}
+				else
+				{
+					i--;
+				}
+				i += 2;
+				den = (int)(expression[i] - '0');
+				i++;
+				if (expression[i] <= 57 && expression[i] >= 48)
+				{
+					den = den * 10 + (int)(expression[i] - '0');
+				}
+				else
+				{
+					i--;
+				}
+			}
+			fraction.push_back(make_pair(num, den));
+		}
+		i++;
+	}
+	int num = 0, den = 1;
+	while (!fraction.empty())
+	{
+		pair<int, int> temp = fraction.back();
+		fraction.pop_back();
+		int a = temp.first * den;
+		int b = temp.second * num;
+		int c = temp.second * den;
+		num = a + b;
+		den = c;
+	}
+	if (num == 0)
+	{
+		den = 1;
+	}
+	int gc;
+	if (num < 0)
+	{
+		gc = gcd(-1 * num, den);
+	}
+	else
+	{
+		gc = gcd(num, den);
+	}
+	num = num / gc;
+	den = den / gc;
+	ostringstream str1;
+	string s;
+	str1 << num << "/" << den;
+	s.append(str1.str());
+	cout << "Answer is : " << s << endl;
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
+	freopen("../input.txt", "r", stdin);
+	freopen("../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();
