@@ -101,10 +101,24 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int x, n;
+	cin >> x >> n;
+	set<int> positions;
+	positions.insert(0);
+	positions.insert(x);
+	multiset<int> lengths;
+	lengths.insert(x);
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int a;
+		cin >> a;
+		positions.insert(a);
+		auto pre = prev(positions.find(a));
+		auto nex = next(positions.find(a));
+		lengths.erase(lengths.find((*nex - *pre)));
+		lengths.insert(a - *pre);
+		lengths.insert(*nex - a);
+		cout << *(lengths.rbegin()) << ' ';
 	}
 }
 
@@ -119,6 +133,7 @@ int main()
 	ios::sync_with_stdio(false);
 
 	cin.tie(nullptr);
+	cout.tie(nullptr);
 
 	int num = 1;
 	//cin >> num;

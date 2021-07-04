@@ -101,10 +101,30 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n, m;
+	cin >> n >> m;
+	multiset<int> set;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int x;
+		cin >> x;
+		set.insert(x);
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int t;
+		cin >> t;
+		auto it = set.upper_bound(t);
+		if (it == set.begin())
+		{
+			cout << -1 << '\n';
+		}
+		else
+		{
+			it--;
+			cout << *it << '\n';
+			set.erase(it);
+		}
 	}
 }
 

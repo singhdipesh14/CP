@@ -101,11 +101,35 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n, target;
+	cin >> n >> target;
+	vector<pair<int, int>> nums(n);
+	int k = 1;
+	for (auto &x : nums)
 	{
-		cout << n << ' ';
+		cin >> x.first;
+		x.second = k++;
 	}
+	sort(nums.begin(), nums.end());
+	int i = 0,
+		j = n - 1;
+	while (i < j)
+	{
+		if (nums[i].first + nums[j].first == target)
+		{
+			cout << nums[i].second << ' ' << nums[j].second << '\n';
+			return;
+		}
+		else if (nums[i].first + nums[j].first < target)
+		{
+			i++;
+		}
+		else
+		{
+			j--;
+		}
+	}
+	cout << "IMPOSSIBLE" << '\n';
 }
 
 int main()

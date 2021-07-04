@@ -101,11 +101,24 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	vector<pair<int, int>> v;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int a, b;
+		cin >> a >> b;
+		v.pb(make_pair(a, 1));
+		v.pb(make_pair(b, -1));
 	}
+	sort(v.begin(), v.end());
+	int c = 0, mx = 0;
+	for (auto a : v)
+	{
+		c += a.second;
+		mx = max(mx, c);
+	}
+	cout << mx << '\n';
 }
 
 int main()

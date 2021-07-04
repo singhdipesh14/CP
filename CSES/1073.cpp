@@ -101,11 +101,26 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	vector<int> cubes(n);
+	multiset<int> sets;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		cin >> cubes[i];
 	}
+	for (int i = 0; i < n; i++)
+	{
+		auto it = sets.upper_bound(cubes[i]);
+		if (it == sets.end())
+		{
+			sets.insert(cubes[i]);
+			continue;
+		}
+		sets.erase(it);
+		sets.insert(cubes[i]);
+	}
+	cout << sets.size() << '\n';
 }
 
 int main()

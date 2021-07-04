@@ -101,11 +101,55 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int s;
+	cin >> s;
+	vector<int> nums(s);
+	int k;
+	for (int &x : nums)
 	{
-		cout << n << ' ';
+		cin >> x;
 	}
+	cin >> k;
+	if (nums.size() == 1)
+	{
+	}
+	vector<long> sums;
+	// sums.push_back(0);
+	long sum = 0;
+	for (int i = 0; i < nums.size(); i++)
+	{
+		sum += nums[i];
+		sums.push_back(sum);
+	}
+	int cnt = 0;
+	if (sum % k == 0)
+	{
+		cnt++;
+	}
+	for (int i = 0; i < sums.size(); i++)
+	{
+		cout << sums[i] << ' ';
+	}
+	cout << '\n';
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (nums[i] % k == 0)
+		{
+			cnt++;
+		}
+	}
+	for (int i = 0; i < sums.size(); i++)
+	{
+		for (int j = i; j < sums.size(); j++)
+		{
+			if ((sums[j] - sums[i]) % k == 0 && sums[j] - sums[i] != 0)
+			{
+				cout << sums[j] - sums[i] << ' ' << i << ' ' << j << '\n';
+				cnt++;
+			}
+		}
+	}
+	cout << cnt << '\n';
 }
 
 int main()

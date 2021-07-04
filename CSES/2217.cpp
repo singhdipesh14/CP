@@ -101,10 +101,47 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n, m;
+	cin >> n >> m;
+	vector<int> v(n + 1);
+	vector<int> pos(n);
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int x;
+		cin >> x;
+		v[x] = i;
+		pos[i] = x;
+	}
+	int ans = 1;
+	for (int i = 1; i < n; i++)
+	{
+		if (v[i] > v[i + 1])
+		{
+			ans++;
+		}
+	}
+	while (m--)
+	{
+		int a, b;
+		cin >> a >> b;
+		int mn = a > b ? b : a, mx;
+		if (mn == a)
+		{
+			mx = b;
+		}
+		else
+		{
+			mx = a;
+		}
+		if (pos[mn - 1] > pos[mx - 1])
+		{
+			ans++;
+		}
+		else
+		{
+			ans--;
+		}
+		cout << ans << '\n';
 	}
 }
 

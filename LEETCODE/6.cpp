@@ -101,11 +101,61 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int numRows;
+	string s;
+	cin >> s >> numRows;
+	if (s.length() <= numRows || numRows == 1 || s.length() == 1)
 	{
-		cout << n << ' ';
+		cout << s;
+		return;
 	}
+	else if (numRows < 3)
+	{
+		for (int i = 0; i < s.length(); i += 2)
+		{
+			cout << s[i];
+		}
+		for (int i = 1; i < s.length(); i += 2)
+		{
+			cout << s[i];
+		}
+		return;
+	}
+	vector<string> v(numRows, "");
+	int j = 0;
+	bool col = true;
+	for (int i = 0; i < s.length(); i++)
+	{
+		v[j].push_back(s[i]);
+		if (col && j + 1 < numRows)
+		{
+			j++;
+		}
+		else if (col && j + 1 == numRows)
+		{
+			col = false;
+			j = numRows - 2;
+		}
+		else if (!col && j - 1 > 0)
+		{
+			j--;
+		}
+		else if (!col && j - 1 == 0)
+		{
+			col = true;
+			j = 0;
+		}
+	}
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << '\n';
+	}
+	string res;
+	for (int i = 0; i < v.size(); i++)
+	{
+		res.append(v[i]);
+	}
+	cout << res << '\n';
 }
 
 int main()

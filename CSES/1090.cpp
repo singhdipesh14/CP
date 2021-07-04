@@ -101,11 +101,29 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n, x;
+	cin >> n >> x;
+	int w[n];
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		cin >> w[i];
 	}
+	sort(w, w + n);
+	int ans = 0;
+	for (int i = 0, j = n - 1; i < j;)
+	{
+		while (i < j && w[i] + w[j] > x)
+		{
+			j--;
+		}
+		if (i >= j)
+		{
+			break;
+		}
+		ans++;
+		i++, j--;
+	}
+	cout << n - ans << '\n';
 }
 
 int main()

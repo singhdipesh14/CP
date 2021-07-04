@@ -101,11 +101,36 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	string s;
+	getline(cin, s);
+	if (s.length() < 2)
 	{
-		cout << n << ' ';
+		cout << s.length() << '\n';
+		return;
 	}
+	int start = 0, end = s.length() - 1;
+	while (true)
+	{
+		char c = s[start];
+		int cnt = 0;
+		for (int i = start; i <= (start + end) / 2; i++)
+		{
+			if (s[i] == s[s.length() - i - 1] && s[i] == c)
+			{
+				cout << s[i] << '\n';
+				cnt++;
+			}
+		}
+		cout << "cnt : " << cnt << '\n';
+		if (cnt == 0)
+		{
+			break;
+		}
+		start += cnt;
+		end -= cnt;
+		cout << start << ' ' << end << '\n';
+	}
+	cout << end - start + 1 << '\n';
 }
 
 int main()

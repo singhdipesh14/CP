@@ -101,11 +101,31 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	vector<int> nums(n);
+	bool allNeg = true;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		cin >> nums[i];
+		if (nums[i] > 0)
+		{
+			allNeg = false;
+		}
 	}
+	if (allNeg)
+	{
+		cout << *max_element(nums.begin(), nums.end()) << '\n';
+		return;
+	}
+	ll sum = 0, ans = INT_MIN;
+	for (int i = 0; i < n; i++)
+	{
+		sum += nums[i];
+		sum = max(sum, 0ll);
+		ans = max(sum, ans);
+	}
+	cout << ans << '\n';
 }
 
 int main()

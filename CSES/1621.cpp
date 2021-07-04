@@ -101,11 +101,16 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	set<int> set;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int x;
+		cin >> x;
+		set.insert(x);
 	}
+	cout << set.size() << '\n';
 }
 
 int main()

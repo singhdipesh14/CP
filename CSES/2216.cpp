@@ -101,11 +101,25 @@ using namespace std;
 
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	vector<int> v(n + 1);
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int x;
+		cin >> x;
+		v[x] = i;
 	}
+	// sort(v.begin(), v.end());
+	int ans = 1;
+	for (int i = 1; i < n; i++)
+	{
+		if (v[i] > v[i + 1])
+		{
+			ans++;
+		}
+	}
+	cout << ans;
 }
 
 int main()

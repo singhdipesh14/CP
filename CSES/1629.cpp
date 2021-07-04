@@ -99,13 +99,36 @@ using namespace std;
 
 //const ll max_num = 100001;
 
+bool functor(vector<int> a, vector<int> b)
+{
+	if (a[1] < b[1])
+	{
+		return true;
+	}
+	return false;
+}
+
 void func()
 {
-	int n = 1e9;
-	for (int i = 0; i < 2 * 1e5; i++)
+	int n;
+	cin >> n;
+	vector<vector<int>> v;
+	for (int i = 0; i < n; i++)
 	{
-		cout << n << ' ';
+		int a, b;
+		cin >> a >> b;
+		v.pb({a, b});
 	}
+	sort(v.begin(), v.end(), functor);
+	stack<vector<int>> st;
+	for (auto i : v)
+	{
+		if (st.empty() || st.top()[1] <= i[0])
+		{
+			st.push(i);
+		}
+	}
+	cout << st.size() << '\n';
 }
 
 int main()
