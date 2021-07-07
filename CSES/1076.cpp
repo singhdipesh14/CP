@@ -1,8 +1,13 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 #define ll long long
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+using namespace __gnu_pbds;
+template <typename t>
+using ordered_set = tree<t, null_type, less<t>, rb_tree_tag, tree_order_statistics_node_update>;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,32 +43,26 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n, k;
+	cin >> n >> k;
+	vector<int> v(n);
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		cin >> v[i];
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	int index = (k - 1) / 2;
+	ordered_set<pair<int, int>> s;
+	int j = 0;
+	for (int i = 0; i < n - k + 1; i++)
 	{
-		while (l[j] == 0)
+		while (j < n && s.size() < k)
 		{
+			s.insert({v[j], j});
 			j++;
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		cout << s.find_by_order(index)->first << ' ';
+		s.erase({v[i], i});
 	}
-	cout << cnt << '\n';
 }
 
 int main()

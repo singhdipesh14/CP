@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,34 +37,48 @@ using namespace std;
 //     return res;
 // }
 
+void dfs(int i, int j, vector<vector<bool>> can, int &ans, int n)
+{
+	if (i == n - 1 && j == n - 1)
+	{
+		ans = ans % mod + 1;
+		return;
+	}
+	if (i + 1 < n && can[i + 1][j])
+	{
+		dfs(i + 1, j, can, ans, n);
+	}
+	if (j + 1 < n && can[i][j + 1])
+	{
+		dfs(i, j + 1, can, ans, n);
+	}
+}
+
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n;
+	cin >> n;
+	vector<vector<bool>> can(n, vector<bool>(n, true));
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		for (int j = 0; j < n; j++)
+		{
+			char c;
+			cin >> c;
+			if (c == '*')
+			{
+				can[i][j] = false;
+			}
+		}
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	int ans = 0;
+	if (!can[0][0])
 	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		cout << 0 << '\n';
+		return;
 	}
-	cout << cnt << '\n';
+	dfs(0, 0, can, ans, n);
+	cout << ans << '\n';
 }
 
 int main()

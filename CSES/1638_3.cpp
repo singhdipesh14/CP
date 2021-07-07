@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,32 +39,46 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n;
+	cin >> n;
+	vector<vector<bool>> can(n, vector<bool>(n, true));
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		for (int j = 0; j < n; j++)
+		{
+			char c;
+			cin >> c;
+			if (c == '*')
+			{
+				can[i][j] = false;
+			}
+		}
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	vector<vector<int>> dp(n, vector<int>(n, 0));
+	dp[0][0] = 1;
+	for (int i = 0; i < n; i++)
 	{
-		while (l[j] == 0)
+		for (int j = 0; j < n; j++)
 		{
-			j++;
+			if (!can[i][j])
+			{
+				dp[i][j] = 0;
+			}
+			else
+			{
+				if (i)
+				{
+					dp[i][j] += dp[i - 1][j];
+				}
+				if (j)
+				{
+					dp[i][j] += dp[i][j - 1];
+				}
+				dp[i][j] = dp[i][j] % mod;
+			}
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
 	}
-	cout << cnt << '\n';
+	cout << dp[n - 1][n - 1] << '\n';
 }
 
 int main()

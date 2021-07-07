@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,32 +39,27 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n, k;
+	cin >> n >> k;
+	vector<int> costs(n);
+	vector<int> pages(n);
+	for (int &i : costs)
+		cin >> i;
+	for (int &i : pages)
+		cin >> i;
+	vector<vector<int>> dp(n + 1, vector<int>(k + 1, 0));
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
-	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
-	{
-		while (l[j] == 0)
+		for (int j = 0; j <= k; j++)
 		{
-			j++;
+			dp[i + 1][j] = dp[i][j];
+			if (j >= costs[i])
+			{
+				dp[i + 1][j] = max(dp[i + 1][j], pages[i] + dp[i][j - costs[i]]);
+			}
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
 	}
-	cout << cnt << '\n';
+	cout << dp[n][k] << '\n';
 }
 
 int main()

@@ -36,34 +36,44 @@ using namespace std;
 //     return res;
 // }
 
+int mod = 1e9 + 7;
+
+int func2(int n, unordered_map<int, int> &dp)
+{
+	if (n < 0)
+	{
+		return 0;
+	}
+	if (n == 0)
+	{
+		return 1;
+	}
+	int cnt = 0;
+	for (int i = 1; i <= 6; i++)
+	{
+		if (dp.count(n - i))
+		{
+			cnt = cnt + dp[n - i];
+		}
+		else
+		{
+			dp[n - i] = func2(n - i, dp) % mod;
+			cnt += dp[n - i];
+		}
+		cnt = cnt % mod;
+	}
+	return cnt;
+}
+
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
-	for (int i = 0; i < n; i++)
-	{
-		cin >> l[i];
-	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
-	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
-	}
-	cout << cnt << '\n';
+	int n;
+	cin >> n;
+	// cout << "n is : " << n << '\n';
+	unordered_map<int, int> dp;
+	dp.reserve(1e6 + 1);
+	int ans = func2(n, dp);
+	cout << ans % mod << '\n';
 }
 
 int main()

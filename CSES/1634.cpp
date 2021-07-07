@@ -38,32 +38,26 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
-	for (int i = 0; i < n; i++)
+	int n, target;
+	cin >> n >> target;
+	vector<int> nums(n);
+	vector<int> coins(target + 1, 1e9);
+	for (int &i : nums)
 	{
-		cin >> l[i];
+		cin >> i;
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	coins[0] = 0;
+	for (int i = 1; i <= target; i++)
 	{
-		while (l[j] == 0)
+		for (int j = 0; j < n; j++)
 		{
-			j++;
+			if (i - nums[j] >= 0)
+			{
+				coins[i] = min(coins[i], coins[i - nums[j]] + 1);
+			}
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
 	}
-	cout << cnt << '\n';
+	cout << (coins[target] == 1e9 ? -1 : coins[target]) << '\n';
 }
 
 int main()

@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,32 +37,47 @@ using namespace std;
 //     return res;
 // }
 
+void dfs(int i, int j, vector<vector<bool>> &visited)
+{
+	visited[i][j] = true;
+	if (i > 0 && !visited[i - 1][j])
+		dfs(i - 1, j, visited);
+	if (i < visited.size() - 1 && !visited[i + 1][j])
+		dfs(i + 1, j, visited);
+	if (j < visited[i].size() - 1 && !visited[i][j + 1])
+		dfs(i, j + 1, visited);
+	if (j > 0 && !visited[i][j - 1])
+		dfs(i, j - 1, visited);
+}
+
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n, m;
+	cin >> n >> m;
+	vector<vector<bool>> visited(n, vector<bool>(m, false));
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		for (int j = 0; j < m; j++)
+		{
+			char c;
+			cin >> c;
+			if (c == '#')
+			{
+				visited[i][j] = true;
+			}
+		}
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
 	int cnt = 0;
-	while (i < n)
+	for (int i = 0; i < n; i++)
 	{
-		while (l[j] == 0)
+		for (int j = 0; j < m; j++)
 		{
-			j++;
+			if (!visited[i][j])
+			{
+				cnt++;
+				dfs(i, j, visited);
+			}
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
 	}
 	cout << cnt << '\n';
 }

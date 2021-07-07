@@ -38,32 +38,16 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n;
+	cin >> n;
+	vector<int> v(n);
+	ll s = 0;
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		cin >> v[i], s += v[i];
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
-	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
-	}
-	cout << cnt << '\n';
+	sort(v.begin(), v.end());
+	cout << max(s, 2ll * v[n - 1]) << '\n';
 }
 
 int main()

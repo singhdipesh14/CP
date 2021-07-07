@@ -36,34 +36,62 @@ using namespace std;
 //     return res;
 // }
 
+int funcs(int n, vector<int> nums, int &val, unordered_map<int, pair<int, int>> &dp)
+{
+	if (n < 0)
+	{
+		return 0;
+	}
+	if (n == 0)
+	{
+		return 1;
+	}
+	int flag = 0;
+	for (int i : nums)
+	{
+		int ret = 0;
+		int d = 0;
+		if (dp.count(n - 1))
+		{
+			ret = dp[n - i].second;
+			d = dp[n - i].first;
+		}
+		else
+		{
+			d = funcs(n - i, nums, ret, dp);
+			dp[n - i].second = ret;
+			dp[n - i].first = d;
+		}
+		if (d)
+		{
+			flag = 1;
+			val = min(ret + 1, val);
+		}
+	}
+	return flag;
+}
+
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
-	for (int i = 0; i < n; i++)
+	int n, target;
+	cin >> n >> target;
+	vector<int> nums(n);
+	for (int &i : nums)
 	{
-		cin >> l[i];
+		cin >> i;
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	int ans = INT_MAX;
+	unordered_map<int, pair<int, int>> dp;
+	// dp.reserve((1e9 + 1));
+	int ret = funcs(target, nums, ans, dp);
+	if (ret)
 	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		cout << ans << '\n';
 	}
-	cout << cnt << '\n';
+	else
+	{
+		cout << -1 << '\n';
+	}
 }
 
 int main()

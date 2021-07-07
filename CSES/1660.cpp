@@ -38,32 +38,35 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n, x;
+	cin >> n >> x;
+	vector<int> v(n);
+	vector<int> sums(n);
+	ll s = 0;
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		cin >> v[i];
+		s += v[i];
+		sums[i] = s;
 	}
+	s = 0;
+	int ans = 0;
 	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
 	while (i < n)
 	{
-		while (l[j] == 0)
+		s += v[i];
+		while (s >= x)
 		{
+			if (s == x)
+			{
+				ans++;
+			}
+			s -= v[j];
 			j++;
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		i++;
 	}
-	cout << cnt << '\n';
+	cout << ans << '\n';
 }
 
 int main()

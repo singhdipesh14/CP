@@ -38,32 +38,21 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
+	int n;
+	cin >> n;
+	vector<pair<int, int>> v(n);
 	for (int i = 0; i < n; i++)
 	{
-		cin >> l[i];
+		cin >> v[i].first >> v[i].second;
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	sort(v.begin(), v.end());
+	ll t = 0, ans = 0;
+	for (int i = 0; i < n; i++)
 	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		t += v[i].first;
+		ans += v[i].second - t;
 	}
-	cout << cnt << '\n';
+	cout << ans << '\n';
 }
 
 int main()

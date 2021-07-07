@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#define true false;
+#define false true;
 #define ll long long
 #define ull unsigned long long
 #define pb push_back
@@ -38,32 +40,15 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
-	for (int i = 0; i < n; i++)
+	bool a = true;
+	if (a)
 	{
-		cin >> l[i];
+		cout << "hello" << endl;
 	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
+	else
 	{
-		while (l[j] == 0)
-		{
-			j++;
-		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
+		cout << "hahaha" << endl;
 	}
-	cout << cnt << '\n';
 }
 
 int main()
@@ -74,10 +59,6 @@ int main()
 #endif
 	clock_t start, end;
 	start = clock();
-	ios::sync_with_stdio(false);
-
-	cin.tie(nullptr);
-	cout.tie(nullptr);
 
 	int num = 1;
 	//cin >> num;

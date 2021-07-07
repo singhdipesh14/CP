@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,32 +39,42 @@ using namespace std;
 
 void func()
 {
-	int n, b;
-	cin >> n >> b;
-	vector<int> l(n);
-	for (int i = 0; i < n; i++)
+	int n, m;
+	cin >> n >> m;
+	// vector<vector<bool>> can(n, vector<bool>(n, false));
+	// for (int i = 0; i < n; i++)
+	// {
+	// 	for (int j = 0; j < n; j++)
+	// 	{
+	// 		char c;
+	// 		cin >> c;
+	// 		if (c == '.')
+	// 		{
+	// 			can[i][j] = true;
+	// 		}
+	// 		else
+	// 		{
+	// 			can[i][j] = false;
+	// 		}
+	// 	}
+	// }
+	vector<vector<int>> paths(n, vector<int>(m, 0));
+	paths[0][0] = 1;
+	for (int i = 0; i < n; ++i)
 	{
-		cin >> l[i];
-	}
-	int i = 0, j = 0;
-	vector<int> c(n, 0);
-	int cnt = 0;
-	while (i < n)
-	{
-		while (l[j] == 0)
+		for (int j = 0; j < m; j++)
 		{
-			j++;
+			if (j + 1 < m)
+			{
+				paths[i][j + 1] = paths[i][j + 1] % mod + paths[i][j] % mod;
+			}
+			if (i + 1 < n)
+			{
+				paths[i + 1][j] = paths[i + 1][j] % mod + paths[i][j] % mod;
+			}
 		}
-		if (j - i + 1 > b)
-		{
-			cout << -1 << '\n';
-			return;
-		}
-		i = j + b;
-		j = i;
-		cnt++;
 	}
-	cout << cnt << '\n';
+	cout << paths[n - 1][m - 1] << '\n';
 }
 
 int main()
