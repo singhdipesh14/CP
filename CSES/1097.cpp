@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,35 +39,23 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
+	int n;
+	cin >> n;
 	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
+	ll sum = 0;
 	for (int i = 0; i < n; i++)
 	{
 		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		sum += v[i];
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	ll dp[500][500] = {0};
+	for (int i = n - 1; i >= 0; i--)
 	{
-		while (j < n && s < x)
+		for (int j = 0; j < n; j++)
 		{
-			s += v[j];
-			j++;
+			/* code */
 		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
 	}
-	cout << ans << '\n';
 }
 
 int main()

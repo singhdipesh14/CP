@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,35 +39,35 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	int height, width;
+	int dp[501][501];
+	cin >> height >> width;
+	for (int i = 0; i < 501; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		for (int j = 0; j < 501; j++)
+		{
+			dp[i][j] = __INT_MAX__;
+		}
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	for (int i = 0; i < 501; i++)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		dp[i][i] = 0;
 	}
-	cout << ans << '\n';
+	for (int h = 1; h <= height; h++)
+	{
+		for (int w = 1; w <= width; w++)
+		{
+			for (int cut = 1; cut < w; cut++)
+			{
+				dp[h][w] = min(dp[h][w], dp[h][cut] + dp[h][w - cut] + 1);
+			}
+			for (int cut = 1; cut < h; cut++)
+			{
+				dp[h][w] = min(dp[h][w], dp[cut][w] + dp[h - cut][w] + 1);
+			}
+		}
+	}
+	cout << dp[height][width] << '\n';
 }
 
 int main()

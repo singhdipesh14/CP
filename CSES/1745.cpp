@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,41 +39,48 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
+	int n;
+	cin >> n;
+	int sum = 0;
+	vector<int> nums(n);
 	for (int i = 0; i < n; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		cin >> nums[i];
+		sum += nums[i];
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	vector<int> dp(sum + 1, 0);
+	dp[0] = 1;
+	for (int i = 0; i < n; i++)
 	{
-		while (j < n && s < x)
+		for (int j = sum; j >= nums[i]; j--)
 		{
-			s += v[j];
-			j++;
+			dp[j] |= dp[j - nums[i]];
 		}
-		if (s == x)
+	}
+	int ans = 0;
+	for (int i = 1; i <= sum; i++)
+	{
+		if (dp[i])
 		{
 			ans++;
 		}
-		s -= v[i];
-		i++;
 	}
 	cout << ans << '\n';
+	for (int i = 1; i <= sum; i++)
+	{
+		if (dp[i])
+		{
+			cout << i << ' ';
+		}
+	}
+	cout << '\n';
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
 	freopen("../input.txt", "r", stdin);
+	freopen("../sys.txt", "w", stderr);
 	freopen("../output.txt", "w", stdout);
 #endif
 	clock_t start, end;

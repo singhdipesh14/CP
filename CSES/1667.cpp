@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,37 +37,55 @@ using namespace std;
 //     return res;
 // }
 
+const int mxN = 1e5, mxM = 2 * 1e5;
+vector<int> adj[mxN];
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0, a, b; i < m; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		cin >> a >> b;
+		a--;
+		b--;
+		adj[a].pb(b);
+		adj[b].pb(a);
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	queue<int> q;
+	q.push(0);
+	vector<int> parent(mxN, -1);
+	vector<int> ans;
+	while (q.size())
 	{
-		while (j < n && s < x)
+		int cur = q.front();
+		q.pop();
+		for (int v : adj[cur])
 		{
-			s += v[j];
-			j++;
+			if (parent[v] < 0)
+			{
+				q.push(v);
+				parent[v] = cur;
+			}
 		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
 	}
-	cout << ans << '\n';
+	if (parent[n - 1] < 0)
+	{
+		cout << "IMPOSSIBLE\n";
+		return;
+	}
+	int cur = n - 1;
+	while (cur)
+	{
+		ans.pb(cur);
+		cur = parent[cur];
+	}
+	ans.pb(0);
+	reverse(ans.begin(), ans.end());
+	cout << ans.size() << '\n';
+	for (int i : ans)
+	{
+		cout << i + 1 << ' ';
+	}
 }
 
 int main()

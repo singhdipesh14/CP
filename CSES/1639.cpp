@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,35 +39,36 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	string n, m;
+	cin >> n >> m;
+	int dp[100][100];
+	memset(dp, 0, sizeof(dp));
+	for (int i = 0; i <= m.length(); i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		dp[0][i] = i;
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	for (int i = 0; i <= n.length(); i++)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		dp[i][0] = i;
 	}
-	cout << ans << '\n';
+	for (int i = 1; i <= n.length(); i++)
+	{
+		for (int j = 1; j <= m.length(); j++)
+		{
+			dp[i][j] = __INT_MAX__;
+			dp[i][j] = min({(dp[i - 1][j - 1] + (n[i - 1] != m[j - 1])), dp[i - 1][j] + 1, dp[i][j - 1] + 1});
+		}
+	}
+	for (int i = 1; i <= n.length(); i++)
+	{
+		for (int j = 1; j <= m.length(); j++)
+		{
+			cout << dp[i][j] << ' ';
+		}
+		cout << '\n';
+	}
+
+	cout << dp[n.length()][m.length()] << '\n';
 }
 
 int main()

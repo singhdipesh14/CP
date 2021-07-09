@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,35 +39,31 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	int n;
+	cin >> n;
+	if ((n * (n + 1)) % 4 != 0)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		cout << 0 << '\n';
+		return;
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	ll dp[n + 1][n * n];
+	// memset(dp, 0, sizeof(dp));
+	for (int i = 1; i < n * n; i++)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		dp[0][i] = 0;
 	}
-	cout << ans << '\n';
+	dp[0][0] = 1;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int x = 0; x <= ((n * (n + 1)) / 4); x++)
+		{
+			if (x >= i)
+				dp[i][x] = (dp[i - 1][x] + dp[i - 1][x - i]) % mod;
+			else
+				dp[i][x] = dp[i - 1][x] % mod;
+		}
+	}
+	cout << (dp[n][(n * (n + 1)) / 4] * 500000004) % mod << '\n';
 }
 
 int main()

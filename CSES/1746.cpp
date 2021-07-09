@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,34 +39,54 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
+	int n, m;
+	cin >> n >> m;
 	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
 	for (int i = 0; i < n; i++)
 	{
 		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	ll dp[n][m + 1];
+	memset(dp, 0, sizeof(dp));
+	if (v[0] == 0)
 	{
-		while (j < n && s < x)
+		for (int i = 1; i <= m; i++)
 		{
-			s += v[j];
-			j++;
+			dp[0][i] = 1;
 		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
 	}
+	else
+	{
+		dp[0][v[0]] = 1;
+	}
+	for (int i = 1; i < n; i++)
+	{
+		if (v[i] == 0)
+		{
+			for (int j = 1; j <= m; j++)
+			{
+				dp[i][j] = (dp[i][j] + dp[i - 1][j]) % mod;
+				if (j > 1)
+					dp[i][j] = (dp[i][j] + dp[i - 1][j - 1]) % mod;
+				if (j < m)
+					dp[i][j] = (dp[i][j] + dp[i - 1][j + 1]) % mod;
+			}
+		}
+		else
+		{
+			dp[i][v[i]] = (dp[i][v[i]] + dp[i - 1][v[i]]) % mod;
+			if (v[i] > 1)
+				dp[i][v[i]] = (dp[i][v[i]] + dp[i - 1][v[i] - 1]) % mod;
+			if (v[i] < m)
+				dp[i][v[i]] = (dp[i][v[i]] + dp[i - 1][v[i] + 1]) % mod;
+		}
+	}
+	ll ans = 0;
+	for (int i = 1; i <= m; i++)
+	{
+		ans = (ans + dp[n - 1][i]) % mod;
+	}
+
 	cout << ans << '\n';
 }
 

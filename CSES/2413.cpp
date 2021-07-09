@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -38,35 +39,35 @@ using namespace std;
 
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	const int mx = 1e6 + 1;
+	ll dp[mx][8] = {0};
+	for (int i = 0; i < 8; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		dp[0][i] = 1;
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	for (int i = 1; i < mx; i++)
 	{
-		while (j < n && s < x)
+		for (int j = 0; j < 8; j++)
 		{
-			s += v[j];
-			j++;
+			if (j == 0 || j == 2 || j == 3 || j == 4 || j == 5)
+			{
+				dp[i][j] = (dp[i][j] + dp[i - 1][0] + dp[i - 1][1] + dp[i - 1][3] + dp[i - 1][4] + dp[i - 1][5]) % mod;
+			}
+			else
+			{
+				dp[i][j] = (dp[i][j] + dp[i - 1][2] + dp[i - 1][6] + dp[i - 1][7]) % mod;
+			}
 		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
 	}
-	cout << ans << '\n';
+	int num;
+	cin >> num;
+	while (num--)
+	{
+		int n;
+		cin >> n;
+		ll ans = (dp[n - 1][2] + dp[n - 1][6]) % mod;
+		cout << ans << '\n';
+	}
 }
 
 int main()
@@ -83,7 +84,7 @@ int main()
 	cout.tie(nullptr);
 
 	int num = 1;
-	//cin >> num;
+	// cin >> num;
 	//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	while (num--)
 	{

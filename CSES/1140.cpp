@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,37 +37,42 @@ using namespace std;
 //     return res;
 // }
 
+class Projects
+{
+public:
+	int st, en, rwd;
+	Projects(int a, int b, int c)
+	{
+		st = a, en = b, rwd = c;
+	}
+};
+
+inline bool functor(Projects *p, Projects *q)
+{
+	return p->en < q->en;
+}
+
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
+	int n;
+	vector<Projects *> v;
 	for (int i = 0; i < n; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		int a, b, c;
+		cin >> a >> b >> c;
+		v.pb(new Projects(a, b, c));
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	sort(v.begin(), v.end(), functor);
+	ll dp[n + 1];
+	dp[0] = 0;
+	vector<int> starts(n);
+	for (int i = 0; i < n; i++)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		starts.pb(v[i]->en);
 	}
-	cout << ans << '\n';
+	for (int i = 0; i < n; i++)
+	{
+	}
 }
 
 int main()

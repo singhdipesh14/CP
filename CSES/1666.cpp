@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,37 +37,47 @@ using namespace std;
 //     return res;
 // }
 
+const int mxN = 1e5;
+const int mxM = 2 * 1e5;
+
+vector<int> adj[mxN], ans;
+vector<bool> vis(mxN, false);
+
+void dfs(int v)
+{
+	vis[v] = true;
+	for (int i : adj[v])
+	{
+		if (!vis[i])
+		{
+			dfs(i);
+		}
+	}
+}
+
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0, a, b; i < m; i++)
+	{
+		cin >> a >> b;
+		adj[--a].push_back(--b);
+		adj[b].push_back(a);
+	}
 	for (int i = 0; i < n; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		if (!vis[i])
+		{
+			ans.push_back(i);
+			dfs(i);
+		}
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	cout << ans.size() - 1 << '\n';
+	for (int i = 1; i < ans.size(); i++)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		cout << ans[0] + 1 << ' ' << ans[i] + 1 << '\n';
 	}
-	cout << ans << '\n';
 }
 
 int main()

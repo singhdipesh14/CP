@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,37 +37,53 @@ using namespace std;
 //     return res;
 // }
 
+int getBest(map<int, int> &c, int v)
+{
+	auto it = c.lower_bound(v);
+	if (it == c.begin())
+	{
+		return 0;
+	}
+	--it;
+	return it->second;
+}
+
+void insert(map<int, int> &c, int dp, int v)
+{
+	if (c[v] >= dp)
+	{
+		return;
+	}
+	c[v] = dp;
+	auto it = c.find(v);
+	it++;
+	while (it != c.end() && it->second <= dp)
+	{
+		auto temp = it;
+		it++;
+		c.erase(temp);
+	}
+}
+
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
-	for (int i = 0; i < n; i++)
+	int n;
+	cin >> n;
+	vector<int> nums(n);
+	for (int &i : nums)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
+		cin >> i;
 	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
+	int dp[n];
+	dp[0] = 1;
+	map<int, int> c;
+	c[nums[0]] = 1;
+	for (int i = 1; i < n; ++i)
 	{
-		while (j < n && s < x)
-		{
-			s += v[j];
-			j++;
-		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
+		dp[i] = 1 + getBest(c, nums[i]);
+		insert(c, dp[i], nums[i]);
 	}
-	cout << ans << '\n';
+	cout << *max_element(dp, dp + n) << '\n';
 }
 
 int main()

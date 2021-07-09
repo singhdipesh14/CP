@@ -3,6 +3,7 @@
 #define ull unsigned long long
 #define pb push_back
 using namespace std;
+const int mod = 1e9 + 7;
 
 // ll powFunc(ll p, ll n)
 // {
@@ -36,37 +37,66 @@ using namespace std;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<int> adj[mxN];
+vector<bool> vis(mxN, false);
+vector<int> parent(mxN, -1);
+
+void dfs(int v, int p = -1)
+{
+	parent[v] = p;
+	vis[v] = true;
+	for (int i : adj[v])
+	{
+		if (i == p)
+		{
+			continue;
+		}
+		if (vis[i])
+		{
+			vector<int> ans;
+			ans.pb(i);
+			int start = v;
+			while (start != i)
+			{
+				ans.pb(start);
+				start = parent[start];
+			}
+			ans.pb(start);
+			cout << ans.size() << '\n';
+			for (int a : ans)
+			{
+				cout << a + 1 << ' ';
+			}
+			cout << '\n';
+			exit(0);
+		}
+		else
+		{
+			dfs(i, v);
+		}
+	}
+}
+
 void func()
 {
-	int n, x;
-	cin >> n >> x;
-	vector<int> v(n);
-	vector<int> sums(n);
-	ll s = 0;
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0, a, b; i < m; i++)
+	{
+		cin >> a >> b;
+		a--, b--;
+		adj[a].pb(b);
+		adj[b].pb(a);
+	}
 	for (int i = 0; i < n; i++)
 	{
-		cin >> v[i];
-		s += v[i];
-		sums[i] = s;
-	}
-	s = 0;
-	int ans = 0;
-	int i = 0, j = 0;
-	while (i < n)
-	{
-		while (j < n && s < x)
+		if (!vis[i])
 		{
-			s += v[j];
-			j++;
+			dfs(i);
 		}
-		if (s == x)
-		{
-			ans++;
-		}
-		s -= v[i];
-		i++;
 	}
-	cout << ans << '\n';
+	cout << "IMPOSSIBLE\n";
 }
 
 int main()
