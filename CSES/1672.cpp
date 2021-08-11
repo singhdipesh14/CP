@@ -41,20 +41,43 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 500;
+ll d[mxN][mxN];
+int m, n;
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	int q;
+	cin >> n >> m >> q;
+	memset(d, 0x3f, sizeof(d));
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		a--, b--;
+		d[a][b] = min(d[a][b], (ll)c);
+		d[b][a] = min(d[b][a], (ll)c);
+	}
+	for (int i = 0; i < n; i++)
+	{
+		d[i][i] = 0;
+	}
+	for (int k = 0; k < n; k++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+			}
+		}
+	}
+	while (q--)
+	{
+		int a, b;
+		cin >> a >> b, a--, b--;
+		cout << (d[a][b] >= 1e18 ? -1 : d[a][b]) << '\n';
+	}
 }
 
 int main()

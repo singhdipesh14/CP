@@ -41,20 +41,61 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<ar<int, 2>> adj[mxN];
+int m, n, p[mxN];
+int d[mxN];
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+		adj[a].pb({-1, b});
+	}
+	priority_queue<ar<int, 2>, vector<ar<int, 2>>, greater<ar<int, 2>>> q;
+	q.push({0, 0});
+	memset(d, 0x3f, sizeof(d));
+	d[0] = 0;
+	p[0] = -1;
+	while (q.size())
+	{
+		auto cur = q.top();
+		q.pop();
+		if (cur[0] > d[cur[1]])
+			continue;
+		for (auto i : adj[cur[1]])
+		{
+			if (d[i[1]] > cur[0] + i[0])
+			{
+				d[i[1]] = cur[0] + i[0];
+				q.push({d[i[1]], i[1]});
+				p[i[1]] = cur[1];
+			}
+		}
+	}
+	if (d[n - 1] >= 1e9)
+	{
+		cout << "IMPOSSIBLE\n";
+		return;
+	}
+	cout << -d[n - 1] + 1 << '\n';
+	vector<int> ans;
+	int start = n - 1;
+	while (start != -1)
+	{
+		ans.pb(start);
+		start = p[start];
+	}
+	reverse(ans.begin(), ans.end());
+	for (int a : ans)
+	{
+		cout << a + 1 << ' ';
+	}
+	cout << '\n';
 }
 
 int main()

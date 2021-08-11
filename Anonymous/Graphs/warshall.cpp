@@ -41,27 +41,76 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 5e2;
+ll d[mxN][mxN];
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	int n, m;
+	cin >> n >> m;
+	memset(d, 0x3f, sizeof(d));
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		d[a][b] = c;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		d[i][i] = 0;
+	}
+	for (int k = 0; k < n; k++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				if (d[i][j] > d[i][k] + d[k][j])
+				{
+					d[i][j] = d[i][k] + d[k][j];
+				}
+			}
+		}
+	}
+	for (int k = 0; k < n; k++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				if (d[i][k] < 1e18 && d[k][j] < 1e18 && d[k][k] < 0)
+				{
+					d[i][j] = 0xc0c0c0c0c0c0c0c0;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (d[i][j] < -1e18)
+			{
+				cout << "-INFINITY" << ' ';
+			}
+			else if (d[i][j] > 1e18)
+			{
+				cout << "INFINITY" << ' ';
+			}
+			else
+			{
+				cout << d[i][j] << ' ';
+			}
+		}
+		cout << '\n';
+	}
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

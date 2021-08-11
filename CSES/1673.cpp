@@ -41,20 +41,58 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 2.5e3;
+vector<ar<ll, 2>> adj[mxN];
+ll d[mxN];
+int m, n;
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		a--, b--;
+		adj[a].pb({c, b});
+	}
+	memset(d, 0xc0, sizeof(d));
+	d[0] = 0;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (auto k : adj[j])
+			{
+				if (d[j] + k[0] > d[k[1]])
+				{
+					d[k[1]] = d[j] + k[0];
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (auto k : adj[j])
+			{
+				if (d[j] + k[0] > d[k[1]])
+				{
+					d[k[1]] = 0x3f3f3f3f3f3f3f3f;
+				}
+			}
+		}
+	}
+
+	if (d[n - 1] >= 1e18)
+	{
+		cout << -1 << '\n';
+	}
+	else
+	{
+		cout << d[n - 1] << '\n';
+	}
 }
 
 int main()

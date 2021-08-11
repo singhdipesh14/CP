@@ -29,32 +29,58 @@ const int mod = 1e9 + 7;
 //     return ans;
 // }
 
-// int gcd(int a, int b){
-//     if(b==0){
-//         return a;
-//     }
-//     return gcd(b, a%b);
-// }
+int gcd(int a, int b)
+{
+	if (b == 0)
+	{
+		return a;
+	}
+	return gcd(b, a % b);
+}
 
 // int lcm(int a, int b){
 //     int res = (a*b)/gcd(a,b);
 //     return res;
 // }
 
+string func2(string s, string t)
+{
+	int n = s.length();
+	int m = t.length();
+	if (n < 2 * m - 1)
+	{
+		return "no secret";
+	}
+	for (int i = 0; i < n; i++)
+	{
+		int j = 0, temp = 0;
+		while ((j < m) && (i + temp < n) && (t[j] == s[i + temp]))
+		{
+			j++;
+			temp += 2;
+		}
+		if (j == m)
+		{
+			stringstream a;
+			a << i + 1;
+			string res = "";
+			res.append(a.str());
+			res.append(",");
+			stringstream b;
+			b << i - 1 + 2 * (m);
+			res.append(b.str());
+			return res;
+		}
+	}
+	return "no secret";
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	string a = "ina";
+	string b = "imnsa";
+	string ans = func2(b, a);
+	cout << ans;
 }
 
 int main()
@@ -83,4 +109,36 @@ int main()
 		 << time_taken << setprecision(5);
 	cerr << " sec " << endl;
 	return 0;
+}
+
+string func(string s, string t)
+{
+	int n = s.length();
+	int m = t.length();
+	if (n < 2 * m)
+	{
+		return "no secret";
+	}
+	for (int i = 0; i <= n; i++)
+	{
+		int j = 0, temp = 0;
+		while ((j < m) && (i + temp < n) && (t[j] == s[i + temp]))
+		{
+			j++;
+			temp += 2;
+		}
+		if (j == m)
+		{
+			stringstream a;
+			a << i + 1;
+			string res = "";
+			res.append(a.str());
+			res.append(",");
+			stringstream b;
+			b << i - 1 + 2 * (m - 1);
+			res.append(b.str());
+			return res;
+		}
+	}
+	return "no secret";
 }

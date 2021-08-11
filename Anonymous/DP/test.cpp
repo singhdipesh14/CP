@@ -43,25 +43,69 @@ const int mod = 1e9 + 7;
 
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	int n, B, E;
+	cin >> n >> B >> E;
+	vector<pair<int, int>> p(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> p[i].ff >> p[i].ss;
+	}
+	sort(p.begin(), p.end());
+	if (B < E)
+	{
+		vector<int> dp(n + 1, 0);
+		dp[0] = B;
+		for (int i = 1; i <= n; i++)
+		{
+			dp[i] = dp[i - 1];
+			for (int j = 0; j < n; j++)
+			{
+				if (dp[i] >= p[j].ff - p[j].ss)
+				{
+					dp[i] = p[j].ff + p[j].ss;
+				}
+			}
+		}
+		if (dp[n] >= E)
+		{
+			cout << "possible\n";
+		}
+		else
+		{
+			cout << "not possible\n";
+		}
+	}
+	else
+	{
+		vector<int> dp(n + 1, 0);
+		dp[0] = E;
+		for (int i = 1; i <= n; i++)
+		{
+			dp[i] = dp[i - 1];
+			for (int j = 0; j < n; j++)
+			{
+				if (dp[i] >= p[j].ff - p[j].ss)
+				{
+					dp[i] = p[j].ff + p[j].ss;
+				}
+			}
+		}
+		if (dp[n] >= B)
+		{
+			cout << "possible\n";
+		}
+		else
+		{
+			cout << "not possible\n";
+		}
+	}
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

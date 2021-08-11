@@ -43,17 +43,28 @@ const int mod = 1e9 + 7;
 
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
+	int n;
+	cin >> n;
+	vector<int> v(n);
+	for (int &i : v)
+	{
+		cin >> i;
+	}
+	sort(v.begin(), v.end());
+	int j = 0;
+	int ans = 0;
+	for (int i = 0; i < n; i++)
+	{
+		j = i + 1;
+		while (j < n)
+		{
+			if ((v[i] + v[j]) % 60 == 0)
+			{
+				ans++;
+			}
+			j++;
+		}
+	}
 	cout << ans << '\n';
 }
 

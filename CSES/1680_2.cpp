@@ -41,20 +41,42 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<int> adj[mxN];
+int m, n;
+int p[mxN];
+vector<int> ans;
+vector<bool> vis(mxN, false);
+
+void dfs(int v)
+{
+	vis[v] = true;
+	for (int u : adj[v])
+	{
+		if (!vis[u])
+		{
+			dfs(u);
+		}
+	}
+	ans.push_back(v);
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		a--, b--;
+		adj[a].pb({b});
+	}
+	dfs(0);
+	cout << ans.size() << '\n';
+	for (int i = 0; i < ans.size(); i++)
+	{
+		cout << ans[i] + 1 << ' ';
+	}
 }
 
 int main()
@@ -80,7 +102,7 @@ int main()
 	end = clock();
 	double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
 	cerr << "Time taken by program is : " << fixed
-		 << time_taken << setprecision(5);
+		 << time_taken << setprecision(7);
 	cerr << " sec " << endl;
 	return 0;
 }

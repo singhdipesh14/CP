@@ -41,27 +41,64 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 5e2;
+vector<ar<ll, 2>> adj[mxN];
+vector<bool> vis(mxN, false);
+int n, m;
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		adj[a].push_back({c, b});
+		adj[b].push_back({c, a});
+	}
+	priority_queue<ar<ll, 2>, vector<ar<ll, 2>>, greater<ar<ll, 2>>> q;
+	for (auto u : adj[0])
+	{
+		q.push(u);
+	}
+	vis[0] = true;
+	int edges = 0;
+	ll cost = 0;
+	while (!q.empty() && edges != n - 1)
+	{
+		auto cur = q.top();
+		q.pop();
+		if (vis[cur[1]])
+		{
+			continue;
+		}
+		vis[cur[1]] = true;
+		cost += cur[0];
+		edges++;
+		for (auto u : adj[cur[1]])
+		{
+			if (!vis[u[1]])
+			{
+				q.push(u);
+			}
+		}
+	}
+	if (edges != n - 1)
+	{
+		cout << "NOT POSSIBLE";
+	}
+	else
+	{
+		cout << cost;
+	}
+	cout << '\n';
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

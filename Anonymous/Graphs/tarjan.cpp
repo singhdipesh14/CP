@@ -41,27 +41,85 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 5e2;
+vector<int> adj[mxN];
+vector<int> ids(mxN, -1), low(mxN);
+vector<bool> act(mxN, false);
+vector<bool> vis(mxN, false);
+stack<int> st;
+vector<vector<int>> ans;
+int m, n, id = 0;
+
+void dfs(int v)
+{
+	st.push(v);
+	ids[v] = low[v] = ++id;
+	vis[v] = true;
+	act[v] = true;
+	for (int u : adj[v])
+	{
+		if (vis[u] && act[u])
+		{
+			low[v] = min(low[v], ids[u]);
+		}
+		else if (!vis[u])
+		{
+			dfs(u);
+			if (act[u])
+			{
+				low[v] = min(low[v], low[u]);
+			}
+		}
+	}
+	if (ids[v] == low[v])
+	{
+		vector<int> res;
+		while (true)
+		{
+			int u = st.top();
+			st.pop();
+			act[u] = false;
+			res.push_back(u);
+			if (u == v)
+			{
+				break;
+			}
+		}
+		ans.push_back(res);
+	}
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b, a--, b--;
+		adj[a].push_back(b);
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (!vis[i])
+		{
+			dfs(i);
+		}
+	}
+	for (int i = 0; i < ans.size(); i++)
+	{
+		for (int j = 0; j < ans[i].size(); j++)
+		{
+			cout << ans[i][j] + 1 << ' ';
+		}
+		cout << '\n';
+	}
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

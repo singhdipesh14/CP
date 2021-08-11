@@ -41,27 +41,77 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 5e2;
+vector<int> adj[mxN], adj2[mxN];
+vector<bool> vis(mxN, false);
+
+void dfs(int v, stack<int> &st)
+{
+	vis[v] = true;
+	for (int u : adj[v])
+	{
+		if (!vis[u])
+		{
+			dfs(u, st);
+		}
+	}
+	st.push(v);
+}
+
+void check(int v)
+{
+	vis[v] = true;
+	cout << v << ' ';
+	for (int u : adj2[v])
+	{
+		if (!vis[u])
+		{
+			check(u);
+		}
+	}
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj2[b].push_back(a);
+	}
+	stack<int> st;
+	for (int i = 0; i < n; i++)
+	{
+		if (!vis[i])
+		{
+			dfs(i, st);
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		vis[i] = false;
+	}
+	while (!st.empty())
+	{
+		int cur = st.top();
+		st.pop();
+		if (vis[cur])
+		{
+			continue;
+		}
+		check(cur);
+		cout << '\n';
+	}
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

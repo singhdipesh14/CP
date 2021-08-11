@@ -41,19 +41,55 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
-void func()
+const int mxN = 1e5;
+vector<ar<ll, 2>> adj0[mxN];
+vector<ar<ll, 2>> adj1[mxN];
+ll d1[mxN], d2[mxN];
+int n, m;
+
+void func(int u, ll d[], vector<ar<ll, 2>> adj[])
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
+	priority_queue<ar<ll, 2>, vector<ar<ll, 2>>, greater<ar<ll, 2>>> q;
+	q.push({0, u});
+	memset(d, 0x3f, sizeof(d1));
+	d[u] = 0;
+	while (q.size())
+	{
+		auto cur = q.top();
+		q.pop();
+		if (cur[0] > d[cur[1]])
+			continue;
+		for (auto v : adj[cur[1]])
+		{
+			if (d[v[1]] > cur[0] + v[0])
+			{
+				d[v[1]] = cur[0] + v[0];
+				q.push({d[v[1]], v[1]});
+			}
+		}
+	}
+}
+
+void solve()
+{
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c, a--, b--;
+		adj0[a].pb({c, b});
+		adj1[b].pb({c, a});
+	}
+	func(0, d1, adj0);
+	func(n - 1, d2, adj1);
+	ll ans = LLONG_MAX;
+	for (int i = 0; i < n; i++)
+	{
+		for (auto j : adj0[i])
+		{
+			ans = min(ans, d1[i] + j[0] / 2 + d2[j[1]]);
+		}
+	}
 	cout << ans << '\n';
 }
 
@@ -75,7 +111,7 @@ int main()
 	//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	while (num--)
 	{
-		func();
+		solve();
 	}
 	end = clock();
 	double time_taken = double(end - start) / double(CLOCKS_PER_SEC);

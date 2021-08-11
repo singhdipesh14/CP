@@ -41,20 +41,40 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+int m, n, k;
+vector<ar<ll, 2>> adj[mxN];
+vector<ll> d[mxN];
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m >> k;
+	for (int i = 0, a, b, c; i < m; i++)
+	{
+		cin >> a >> b >> c, a--, b--;
+		adj[a].pb({c, b});
+	}
+	priority_queue<ar<ll, 2>, vector<ar<ll, 2>>, greater<ar<ll, 2>>> q;
+	q.push({0, 0});
+	while (q.size())
+	{
+		auto cur = q.top();
+		q.pop();
+		if (d[cur[1]].size() >= k)
+		{
+			continue;
+		}
+		d[cur[1]].push_back(cur[0]);
+		for (auto v : adj[cur[1]])
+		{
+			q.push({cur[0] + v[0], v[1]});
+		}
+	}
+	for (int i = 0; i < k; i++)
+	{
+		cout << d[n - 1][i] << ' ';
+	}
+	cout << '\n';
 }
 
 int main()

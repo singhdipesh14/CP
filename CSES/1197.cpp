@@ -41,20 +41,69 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 2.5e3;
+vector<ar<ll, 2>> adj[mxN];
+int n, m, p[mxN];
+ll d[mxN];
+vector<bool> vis(mxN, false);
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c, a--, b--;
+		adj[a].pb({b, c});
+	}
+	memset(d, 0x3f, sizeof(d));
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (auto t : adj[j])
+			{
+				if (d[t[0]] > d[j] + t[1])
+				{
+					d[t[0]] = d[j] + t[1];
+					p[t[0]] = j;
+				}
+			}
+		}
+	}
+	for (int j = 0; j < n; j++)
+	{
+		for (auto t : adj[j])
+		{
+			if (d[t[0]] > d[j] + t[1])
+			{
+				while (!vis[j])
+				{
+					vis[j] = true;
+					j = p[j];
+				}
+				int start = j;
+				vector<int> ans;
+				ans.pb(start);
+				start = p[start];
+				while (start != j)
+				{
+					ans.pb(start);
+					start = p[start];
+				}
+				ans.pb(start);
+				reverse(ans.begin(), ans.end());
+				cout << "YES\n";
+				for (int i : ans)
+				{
+					cout << i + 1 << ' ';
+				}
+				cout << '\n';
+				return;
+			}
+		}
+	}
+	cout << "NO\n";
 }
 
 int main()

@@ -41,27 +41,67 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<ar<ll, 2>> adj[mxN];
+ll d[mxN];
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		adj[a].push_back({c, b});
+	}
+	memset(d, 0x3f, sizeof(d));
+	d[0] = 0;
+	for (int k = 0; k < n - 1; k++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (auto v : adj[i])
+			{
+				if (d[v[1]] > v[0] + d[i])
+				{
+					d[v[1]] = v[0] + d[i];
+				}
+			}
+		}
+	}
+	for (int k = 0; k < n - 1; k++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (auto v : adj[i])
+			{
+				if (d[v[1]] > v[0] + d[i])
+				{
+					d[v[1]] = 0xc0c0c0c0c0c0c0c0;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (d[i] < -1e18)
+		{
+			cout << "-INFINITY" << ' ';
+		}
+		else
+		{
+			cout << d[i] << ' ';
+		}
+	}
+	cout << '\n';
 }
 
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../input.txt", "r", stdin);
-	freopen("../output.txt", "w", stdout);
+	freopen("../../input.txt", "r", stdin);
+	freopen("../../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();

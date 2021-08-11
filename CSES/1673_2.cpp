@@ -41,20 +41,90 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 2.5e3;
+vector<ar<ll, 2>> adj[mxN];
+ll d[mxN];
+int m, n;
+vector<int> adj2[mxN];
+vector<bool> vis1(mxN, false), vis2(mxN, false);
+
+void dfs1(int u)
+{
+	vis1[u] = true;
+	for (auto i : adj[u])
+	{
+		if (!vis1[i[1]])
+		{
+			dfs1(i[1]);
+		}
+	}
+}
+
+void dfs2(int u)
+{
+	vis2[u] = true;
+	for (auto i : adj2[u])
+	{
+		if (!vis2[i])
+		{
+			dfs2(i);
+		}
+	}
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		a--, b--;
+		adj[a].pb({-c, b});
+		adj2[b].pb(a);
+	}
+	memset(d, 0x3f, sizeof(d));
+	d[0] = 0;
+	dfs1(0);
+	dfs2(n - 1);
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (auto k : adj[j])
+			{
+				if (d[j] + k[0] < d[k[1]])
+				{
+					d[k[1]] = d[j] + k[0];
+				}
+			}
+		}
+	}
+	bool flag = false;
+	for (int i = 0; i < n - 1; i++)
+	{
+		flag = false;
+		for (int j = 0; j < n; j++)
+		{
+			for (auto k : adj[j])
+			{
+				if (d[j] + k[0] < d[k[1]] && vis1[j] && vis2[k[1]])
+				{
+					flag = true;
+					d[k[1]] = 0xc0c0c0c0c0c0c0c0;
+				}
+			}
+		}
+	}
+
+	if (flag)
+	{
+		cout << -1 << '\n';
+	}
+	else
+	{
+		cout << -d[n - 1] << '\n';
+	}
 }
 
 int main()

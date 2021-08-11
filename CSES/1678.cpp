@@ -41,20 +41,64 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<int> adj[mxN];
+int m, n, p[mxN];
+vector<bool> vis(mxN, false), act(mxN, false);
+
+void dfs(int v)
+{
+	vis[v] = true;
+	act[v] = true;
+	for (int u : adj[v])
+	{
+		if (!act[u])
+		{
+			if (!vis[u])
+			{
+				p[u] = v;
+				dfs(u);
+			}
+		}
+		else
+		{
+			int start = v;
+			vector<int> ans;
+			ans.pb(start);
+			while (start != u)
+			{
+				start = p[start];
+				ans.pb(start);
+			}
+			ans.pb(v);
+			reverse(ans.begin(), ans.end());
+			cout << ans.size() << '\n';
+			for (int a : ans)
+			{
+				cout << a + 1 << ' ';
+			}
+			cout << '\n';
+			exit(0);
+		}
+	}
+	act[v] = false;
+}
+
 void func()
 {
-	int arr[] = {1,
-				 2,
-				 3,
-				 4,
-				 5};
-	int n = sizeof(arr) / sizeof(arr[0]);
-	int *idx = upper_bound(arr, arr + n, 3);
-	cout << idx << ' ' << *idx << '\n';
-	int ans = (arr + n) - idx;
-	cout << (arr + n) << '\n';
-	cout << (arr + n) - idx << '\n';
-	cout << ans << '\n';
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b, a--, b--;
+		adj[a].pb(b);
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (!vis[i])
+			dfs(i);
+	}
+	cout << "IMPOSSIBLE\n";
 }
 
 int main()
