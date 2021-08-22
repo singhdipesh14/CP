@@ -2,6 +2,10 @@
 #define ll long long
 #define ull unsigned long long
 #define pb push_back
+#define ff first
+#define ss second
+#define ar array
+#define mp make_pair
 using namespace std;
 const int mod = 1e9 + 7;
 
@@ -37,35 +41,56 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
+const int mxN = 1e5;
+vector<ar<ll, 2>> adj[mxN];
+vector<bool> vis(mxN, false);
+int n, m;
+
 void func()
 {
-	int n;
-	cin >> n;
-	vector<int> arr(n);
-	for (int i = 0; i < n; i++)
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
 	{
-		cin >> arr[i];
+		int a, b, c;
+		cin >> a >> b >> c;
+		a--, b--;
+		adj[a].push_back({c, b});
+		adj[b].push_back({c, a});
 	}
-	vector<vector<ll>> dp(n, vector<ll>(n, 0));
-	for (int g = 0; g < n; g++)
+	priority_queue<ar<ll, 2>, vector<ar<ll, 2>>, greater<ar<ll, 2>>> q;
+	for (auto u : adj[0])
 	{
-		for (int i = 0, j = g; j < n; i++, j++)
+		q.push(u);
+	}
+	int edges = 0;
+	ll cost = 0;
+	vis[0] = true;
+	while (q.size() || edges != n - 1)
+	{
+		auto cur = q.top();
+		q.pop();
+		if (vis[cur[1]])
 		{
-			if (g == 0)
+			continue;
+		}
+		int v = cur[1];
+		vis[cur[1]] = true;
+		cost += cur[0];
+		edges++;
+		for (auto u : adj[v])
+		{
+			if (!vis[u[1]])
 			{
-				dp[i][j] = arr[i];
-			}
-			else if (g == 1)
-			{
-				dp[i][j] = max(arr[i], arr[j]);
-			}
-			else
-			{
-				dp[i][j] = max(arr[i] + min(dp[i + 2][j], dp[i + 1][j - 1]), arr[j] + min(dp[i + 1][j - 1], dp[i][j - 2]));
+				q.push(u);
 			}
 		}
 	}
-	cout << dp[0][n - 1] << '\n';
+	if (edges == n - 1)
+	{
+		cout << cost << '\n';
+	}
+	else
+		cout << -1 << '\n';
 }
 
 int main()

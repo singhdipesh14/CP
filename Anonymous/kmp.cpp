@@ -2,6 +2,10 @@
 #define ll long long
 #define ull unsigned long long
 #define pb push_back
+#define ff first
+#define ss second
+#define ar array
+#define mp make_pair
 using namespace std;
 const int mod = 1e9 + 7;
 
@@ -37,35 +41,48 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
-void func()
+void computeLPS(string pat, vector<int> &lps)
 {
-	int n;
-	cin >> n;
-	vector<int> arr(n);
-	for (int i = 0; i < n; i++)
+	int m = pat.length();
+	lps[0] = 0;
+	int i = 1;
+	int len = 0;
+	while (i < m)
 	{
-		cin >> arr[i];
-	}
-	vector<vector<ll>> dp(n, vector<ll>(n, 0));
-	for (int g = 0; g < n; g++)
-	{
-		for (int i = 0, j = g; j < n; i++, j++)
+		if (pat[i] == pat[len])
 		{
-			if (g == 0)
+			len++;
+			lps[i] = len;
+			i++;
+		}
+		else
+		{
+			if (len != 0)
 			{
-				dp[i][j] = arr[i];
-			}
-			else if (g == 1)
-			{
-				dp[i][j] = max(arr[i], arr[j]);
+				len = lps[len - 1];
 			}
 			else
 			{
-				dp[i][j] = max(arr[i] + min(dp[i + 2][j], dp[i + 1][j - 1]), arr[j] + min(dp[i + 1][j - 1], dp[i][j - 2]));
+				lps[i] = 0;
+				i++;
 			}
 		}
 	}
-	cout << dp[0][n - 1] << '\n';
+}
+
+void func()
+{
+	string txt, pat;
+	getline(cin, txt);
+	// cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	getline(cin, pat);
+	vector<int> lps(pat.length());
+	computeLPS(pat, lps);
+	for (int i = 0; i < lps.size(); i++)
+	{
+		cout << lps[i] << ' ';
+	}
+	cout << '\n';
 }
 
 int main()

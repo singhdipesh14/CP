@@ -110,7 +110,7 @@ void func()
 		q.push({c, a, b});
 	}
 	ll cost = 0;
-	while (u.num != 1)
+	while (q.size() && u.num != 1)
 	{
 		auto cur = q.top();
 		q.pop();
