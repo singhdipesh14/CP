@@ -41,78 +41,44 @@ const int mod = 1e9 + 7;
 //     return res;
 // }
 
-const int mxN = 5e2;
-vector<int> adj[mxN], adj2[mxN];
-vector<bool> vis(mxN, false);
-vector<int> who(mxN);
-
-void dfs(int v, stack<int> &st)
+int partition(vector<int> &v, int first, int last)
 {
-	vis[v] = true;
-	for (int u : adj[v])
+	int pivot = v[last];
+	int i = first;
+	for (int j = first; j < last; j++)
 	{
-		if (!vis[u])
+		if (v[j] < pivot)
 		{
-			dfs(u, st);
+			swap(v[i], v[j]);
+			i++;
 		}
 	}
-	st.push(v);
+	swap(v[i], v[last]);
+	return i;
 }
 
-void check(int v, int w)
+void sort(vector<int> &v, int first, int last)
 {
-	vis[v] = true;
-	cout << v << ' ';
-	who[v] = w;
-	for (int u : adj2[v])
-	{
-		if (!vis[u])
-		{
-			check(u, w);
-		}
-	}
+	if (first >= last)
+		return;
+	int p = partition(v, first, last);
+	sort(v, first, p - 1);
+	sort(v, p + 1, last);
 }
 
 void func()
 {
-	int n, m;
-	cin >> n >> m;
-	for (int i = 0; i < m; i++)
+	int n;
+	cin >> n;
+	vector<int> v(n);
+	for (int &i : v)
 	{
-		int a, b;
-		cin >> a >> b;
-		adj[a].push_back(b);
-		adj2[b].push_back(a);
+		cin >> i;
 	}
-	iota(who.begin(), who.end(), 0);
-	stack<int>
-		st;
-	for (int i = 0; i < n; i++)
+	sort(v, 0, n - 1);
+	for (int i : v)
 	{
-		if (!vis[i])
-		{
-			dfs(i, st);
-		}
-	}
-	for (int i = 0; i < n; i++)
-	{
-		vis[i] = false;
-	}
-	while (!st.empty())
-	{
-		int cur = st.top();
-		st.pop();
-		if (vis[cur])
-		{
-			continue;
-		}
-		check(cur, cur);
-		cout << '\n';
-	}
-	cout << '\n';
-	for (int i = 0; i < n; i++)
-	{
-		cout << who[i] << ' ';
+		cout << i << ' ';
 	}
 	cout << '\n';
 }
@@ -120,8 +86,8 @@ void func()
 int main()
 {
 #ifndef ONLINE_JUDGE
-	freopen("../../input.txt", "r", stdin);
-	freopen("../../output.txt", "w", stdout);
+	freopen("../input.txt", "r", stdin);
+	freopen("../output.txt", "w", stdout);
 #endif
 	clock_t start, end;
 	start = clock();
